@@ -1,8 +1,11 @@
 import { aws_iam as iam } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
+export interface IamProps {
+  envName: string;
+}
 export class Iam extends Construct {
-  constructor(scope: Construct, id: string) {
+  constructor(scope: Construct, id: string, props: IamProps) {
     super(scope, id);
 
     // SysAdmin
@@ -586,6 +589,8 @@ export class Iam extends Construct {
       assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
     }).addManagedPolicy(readOnlyAdminManagedPolicy);
 
-    new iam.Group(this, 'ReadOnlyAdminGroup').addManagedPolicy(readOnlyAdminManagedPolicy);
+    if (props.envName === 'Production') {
+      new iam.Group(this, 'ReadOnlyAdminGroup').addManagedPolicy(readOnlyAdminManagedPolicy);
+    }
   }
 }

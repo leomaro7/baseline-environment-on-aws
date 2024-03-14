@@ -14,6 +14,7 @@ import { ITopic } from 'aws-cdk-lib/aws-sns';
 export interface DetectionProps {
   notifyEmail: string;
   cloudTrailLogGroupName: string;
+  envName: string;
 }
 
 export class Detection extends Construct {
@@ -32,12 +33,17 @@ export class Detection extends Construct {
       awsServiceName: 'securityhub.amazonaws.com',
     });
 
-    new hub.CfnHub(this, 'SecurityHub');
+    new hub.CfnHub(this, 'SecurityHub', {
+      enableDefaultStandards: false,
+    });
 
     // === AWS Config Conformance Pack ===
     // https://github.com/awslabs/aws-config-rules/tree/master/aws-config-conformance-packs
     new cfn_inc.CfnInclude(this, 'CfnControlTowerGuardralis', {
       templateFile: 'cfn/AWS-Control-Tower-Detective-Guardrails.yaml',
+      parameters: {
+        Environment: props.envName,
+      },
     });
 
     // === AWS Config Rules ===
