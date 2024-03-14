@@ -8,6 +8,7 @@ import { Logging } from '../construct/logging';
 export interface BLEAGovBaseStandaloneProps extends StackProps {
   securityNotifyEmail: string;
   envName: string;
+  severityLabels: string[];
   // securitySlackWorkspaceId: string;
   // securitySlackChannelId: string;
 }
@@ -25,6 +26,7 @@ export class BLEAGovBaseStandaloneStack extends Stack {
       cloudTrailLogGroupName: logging.trailLogGroup.logGroupName,
       notifyEmail: props.securityNotifyEmail,
       envName: props.envName,
+      severityLabels: props.severityLabels,
     });
 
     // You must create a configuration recorder before you can create or update a Config rule.

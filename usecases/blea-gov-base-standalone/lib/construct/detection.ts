@@ -15,6 +15,7 @@ export interface DetectionProps {
   notifyEmail: string;
   cloudTrailLogGroupName: string;
   envName: string;
+  severityLabels: string[];
 }
 
 export class Detection extends Construct {
@@ -365,7 +366,7 @@ export class Detection extends Construct {
         detail: {
           findings: {
             Severity: {
-              Label: ['CRITICAL', 'HIGH'],
+              Label: props.severityLabels,
             },
             Compliance: {
               Status: ['FAILED'],
