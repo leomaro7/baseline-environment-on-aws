@@ -6,9 +6,9 @@ import { devParameter } from '../parameter';
 
 const app = new cdk.App();
 
-if (!devParameter.securitySlackWorkspaceId || !devParameter.securitySlackChannelId) {
-  throw new Error('securitySlackWorkspaceId and securitySlackChannelId are required');
-}
+// if (!devParameter.securitySlackWorkspaceId || !devParameter.securitySlackChannelId) {
+//   throw new Error('securitySlackWorkspaceId and securitySlackChannelId are required');
+// }
 
 // Create stack for "Dev" environment.
 // If you have multiple environments, instantiate stacks with its parameters.
@@ -24,6 +24,7 @@ new BLEAGovBaseStandaloneStack(app, 'Dev-BLEAGovBaseStandalone', {
   },
 
   securityNotifyEmail: devParameter.securityNotifyEmail,
-  securitySlackWorkspaceId: devParameter.securitySlackWorkspaceId,
-  securitySlackChannelId: devParameter.securitySlackChannelId,
+  envName: devParameter.envName,
+  // securitySlackWorkspaceId: devParameter.securitySlackWorkspaceId,
+  // securitySlackChannelId: devParameter.securitySlackChannelId,
 });

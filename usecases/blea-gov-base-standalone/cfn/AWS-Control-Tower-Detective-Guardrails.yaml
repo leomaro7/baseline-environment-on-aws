@@ -1,18 +1,22 @@
-###################################################################################
-#
-#   Conformance Pack:
-#     AWS Control Tower Detective Guardrails Conformance Pack
-#
-#    The AWS Control Tower detective guardrails conformance pack contains all of the
-#    AWS Config Rules based guardrails from AWS Control Tower. Use this conformance
-#    pack to apply AWS Control Tower detective guardrails to your existing accounts
-#    prior to enrolling them in AWS Control Tower or to manage resources in your
-#    accounts in regions not currently supported by AWS Control Tower.
-###################################################################################
+Parameters:
+  Environment:
+    Type: String
+
+Conditions:
+  IsDev: !Equals
+    - !Ref Environment
+    - Development
+  IsStg: !Equals
+    - !Ref Environment
+    - Staging
+  IsPrg: !Equals
+    - !Ref Environment
+    - Production
 
 Resources:
   CheckForEbsOptimizedInstance:
     Type: AWS::Config::ConfigRule
+    Condition: IsPrg
     Properties:
       ConfigRuleName: CheckForEbsOptimizedInstance
       Description: Disallow launch of EC2 instance types that are not EBS-optimized - Checks whether EBS optimization is enabled for your EC2 instances that can be EBS-optimized
