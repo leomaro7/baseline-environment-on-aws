@@ -6,6 +6,15 @@ import { devParameter } from '../parameter';
 
 const app = new cdk.App();
 
+const argContext = 'environment';
+const envKey = app.node.tryGetContext(argContext);
+if (envKey == undefined)
+  throw new Error(`Please specify environment with context option. ex) cdk deploy -c ${argContext}=dev`);
+const envVals = app.node.tryGetContext(envKey);
+if (envVals == undefined) throw new Error('Invalid environment.');
+
+const severityLabels = envVals.Severity.Label;
+
 // if (!devParameter.securitySlackWorkspaceId || !devParameter.securitySlackChannelId) {
 //   throw new Error('securitySlackWorkspaceId and securitySlackChannelId are required');
 // }
@@ -25,6 +34,7 @@ new BLEAGovBaseStandaloneStack(app, 'Dev-BLEAGovBaseStandalone', {
 
   securityNotifyEmail: devParameter.securityNotifyEmail,
   envName: devParameter.envName,
+  severityLabels: severityLabels,
   // securitySlackWorkspaceId: devParameter.securitySlackWorkspaceId,
   // securitySlackChannelId: devParameter.securitySlackChannelId,
 });
